@@ -22,7 +22,7 @@ import useStyles from "./styles";
 //   },
 // ];
 
-export const Products = ({ products }) => {
+export const Products = ({ products, onAddToCart }) => {
   const classes = useStyles();
 
   return (
@@ -32,7 +32,7 @@ export const Products = ({ products }) => {
         {products.map((product, index) => {
           return (
             <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
-              <Product product={product} />
+              <Product product={product} onAddToCart={onAddToCart} />
             </Grid>
           );
         })}

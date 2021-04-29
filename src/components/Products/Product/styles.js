@@ -16,9 +16,4 @@ export default makeStyles(() => ({
     display: "flex",
     justifyContent: "space-between",
   },
-  descriptionWrapper: {
-    width: "100%",
-    textOverflow: "ellipsis",
-    overflow: "hidden",
-  },
 }));

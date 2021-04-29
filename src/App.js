@@ -6,6 +6,9 @@ import Products from "./components/Products/Products";
 
 export const App = () => {
   const [products, setProducts] = useState([]);
+  const [cart, setCart] = useState({});
+
+  console.log(cart);
 
   const fetchProducts = async () => {
     try {
@@ -16,16 +19,26 @@ export const App = () => {
     }
   };
 
+  const fetchCart = async () => {
+    const response = await commerce.cart.retrieve();
+    setCart(response);
+  };
+
+  const handleAddCart = async (productId, quantity) => {
+    const item = await commerce.cart.add(productId, quantity);
+
+    setCart(item.cart);
+  };
+
   useEffect(() => {
     fetchProducts();
+    fetchCart();
   }, []);
-
-  console.log(products);
 
   return (
     <div>
-      <Navbar />
-      <Products products={products} />
+      <Navbar totalItems={cart.total_items} />
+      <Products products={products} onAddToCart={handleAddCart} />
     </div>
   );
 };
