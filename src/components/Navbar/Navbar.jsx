@@ -8,17 +8,25 @@ import {
   Typography,
 } from "@material-ui/core";
 import { ShoppingCart } from "@material-ui/icons";
+import { Link, useLocation } from "react-router-dom";
 
 import useStyles from "./styles";
 
 const Navbar = ({ totalItems }) => {
   const classes = useStyles();
+  const location = useLocation();
 
   return (
     <>
       <AppBar position="fixed" className={classes.appBar} color="inherit">
         <Toolbar>
-          <Typography variant="h6" className={classes.title} color="inherit">
+          <Typography
+            component={Link}
+            to="/"
+            variant="h6"
+            className={classes.title}
+            color="inherit"
+          >
             <img
               src="https://icons.iconarchive.com/icons/jozef89/services-flat/512/ecommerce-icon.png"
               alt="Commerce.js"
@@ -27,13 +35,20 @@ const Navbar = ({ totalItems }) => {
             />
             Simple E-Commerce
           </Typography>
-          <div className={classes.grow} />
+          <div className={classes.flex} />
           <div className={classes.menuButton}>
-            <IconButton aria-label="show-cart" color="inherit">
-              <Badge badgeContent={totalItems} color="secondary">
-                <ShoppingCart />
-              </Badge>
-            </IconButton>
+            {location.pathname === "/" && (
+              <IconButton
+                component={Link}
+                to="/cart"
+                aria-label="show-cart"
+                color="inherit"
+              >
+                <Badge badgeContent={totalItems} color="secondary">
+                  <ShoppingCart />
+                </Badge>
+              </IconButton>
+            )}
           </div>
         </Toolbar>
       </AppBar>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { commerce } from "./lib/commerce";
 
 import { Navbar, Products, Cart } from "./components";
@@ -10,23 +11,39 @@ export const App = () => {
   console.log(cart);
 
   const fetchProducts = async () => {
-    try {
-      const response = await commerce.products.list();
-      setProducts(response.data);
-    } catch (error) {
-      console.log(error);
-    }
+    const { data } = await commerce.products.list();
+
+    setProducts(data);
   };
 
   const fetchCart = async () => {
     const response = await commerce.cart.retrieve();
+
     setCart(response);
   };
 
   const handleAddCart = async (productId, quantity) => {
-    const item = await commerce.cart.add(productId, quantity);
+    const { cart } = await commerce.cart.add(productId, quantity);
 
-    setCart(item.cart);
+    setCart(cart);
+  };
+
+  const handleUpdateCartQty = async (productId, quantity) => {
+    const { cart } = await commerce.cart.update(productId, { quantity });
+
+    setCart(cart);
+  };
+
+  const handleRemoveFromCart = async (productId) => {
+    const { cart } = await commerce.cart.remove(productId);
+
+    setCart(cart);
+  };
+
+  const handleClearCart = async () => {
+    const { cart } = await commerce.cart.empty();
+
+    setCart(cart);
   };
 
   useEffect(() => {
@@ -35,11 +52,22 @@ export const App = () => {
   }, []);
 
   return (
-    <div>
+    <Router>
       <Navbar totalItems={cart.total_items} />
-      {/* <Products products={products} onAddToCart={handleAddCart} /> */}
-      <Cart cart={cart} />
-    </div>
+      <Switch>
+        <Route exact path="/">
+          <Products products={products} onAddToCart={handleAddCart} />
+        </Route>
+        <Route path="/cart">
+          <Cart
+            cart={cart}
+            handleUpdateCartQty={handleUpdateCartQty}
+            handleRemoveFromCart={handleRemoveFromCart}
+            handleClearCart={handleClearCart}
+          />
+        </Route>
+      </Switch>
+    </Router>
   );
 };
 

@@ -10,8 +10,8 @@ import {
 
 import useStyles from "./styles";
 
-const CartItem = ({ item }) => {
-  const { media, name, price, quantity } = item;
+const CartItem = ({ item, onUpdateCartQty, onRemoveCart }) => {
+  const { id, media, name, price, quantity } = item;
   const classes = useStyles();
 
   return (
@@ -25,15 +25,28 @@ const CartItem = ({ item }) => {
       </CardContent>
       <CardActions className={classes.cardActions}>
         <div className={classes.buttons}>
-          <Button type="button" size="small">
+          <Button
+            type="button"
+            size="small"
+            onClick={() => onUpdateCartQty(id, quantity - 1)}
+          >
             -
           </Button>
           <Typography>{quantity}</Typography>
-          <Button type="button" size="small">
+          <Button
+            type="button"
+            size="small"
+            onClick={() => onUpdateCartQty(id, quantity + 1)}
+          >
             +
           </Button>
         </div>
-        <Button variant="contained" color="secondary" type="button">
+        <Button
+          variant="contained"
+          color="secondary"
+          type="button"
+          onClick={() => onRemoveCart(id)}
+        >
           Remove
         </Button>
       </CardActions>
