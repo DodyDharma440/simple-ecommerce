@@ -60,6 +60,8 @@ const Cart = ({
               Clear Cart
             </Button>
             <Button
+              component={Link}
+              to="/checkout"
               variant="contained"
               color="primary"
               className={classes.checkoutButton}

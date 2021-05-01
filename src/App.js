@@ -2,13 +2,11 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { commerce } from "./lib/commerce";
 
-import { Navbar, Products, Cart } from "./components";
+import { Navbar, Products, Cart, Checkout } from "./components";
 
 export const App = () => {
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState({});
-
-  console.log(cart);
 
   const fetchProducts = async () => {
     const { data } = await commerce.products.list();
@@ -65,6 +63,9 @@ export const App = () => {
             handleRemoveFromCart={handleRemoveFromCart}
             handleClearCart={handleClearCart}
           />
+        </Route>
+        <Route path="/checkout">
+          <Checkout cart={cart} />
         </Route>
       </Switch>
     </Router>
