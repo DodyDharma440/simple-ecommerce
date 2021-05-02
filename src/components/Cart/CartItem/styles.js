@@ -1,6 +1,9 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 export default makeStyles(() => ({
+  root: {
+    borderRadius: 15,
+  },
   media: {
     height: 260,
   },

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { ThemeProvider } from "@material-ui/core/styles";
 import { commerce } from "./lib/commerce";
-
+import { theme } from "./theme";
 import { Navbar, Products, Cart, Checkout } from "./components";
 
 export const App = () => {
@@ -22,10 +23,13 @@ export const App = () => {
     setCart(response);
   };
 
-  const handleAddCart = async (productId, quantity) => {
+  const handleAddCart = async (productId, quantity, callback) => {
     const { cart } = await commerce.cart.add(productId, quantity);
 
     setCart(cart);
+    if (cart) {
+      callback(cart);
+    }
   };
 
   const handleUpdateCartQty = async (productId, quantity) => {
@@ -71,30 +75,32 @@ export const App = () => {
   }, []);
 
   return (
-    <Router>
-      <Navbar totalItems={cart.total_items} />
-      <Switch>
-        <Route exact path="/">
-          <Products products={products} onAddToCart={handleAddCart} />
-        </Route>
-        <Route path="/cart">
-          <Cart
-            cart={cart}
-            handleUpdateCartQty={handleUpdateCartQty}
-            handleRemoveFromCart={handleRemoveFromCart}
-            handleClearCart={handleClearCart}
-          />
-        </Route>
-        <Route path="/checkout">
-          <Checkout
-            cart={cart}
-            order={order}
-            onCaptureCheckout={handleCaptureCheckout}
-            error={errorMessage}
-          />
-        </Route>
-      </Switch>
-    </Router>
+    <ThemeProvider theme={theme}>
+      <Router>
+        <Navbar totalItems={cart.total_items} />
+        <Switch>
+          <Route exact path="/">
+            <Products products={products} onAddToCart={handleAddCart} />
+          </Route>
+          <Route path="/cart">
+            <Cart
+              cart={cart}
+              handleUpdateCartQty={handleUpdateCartQty}
+              handleRemoveFromCart={handleRemoveFromCart}
+              handleClearCart={handleClearCart}
+            />
+          </Route>
+          <Route path="/checkout">
+            <Checkout
+              cart={cart}
+              order={order}
+              onCaptureCheckout={handleCaptureCheckout}
+              error={errorMessage}
+            />
+          </Route>
+        </Switch>
+      </Router>
+    </ThemeProvider>
   );
 };
 

@@ -15,7 +15,7 @@ const CartItem = ({ item, onUpdateCartQty, onRemoveCart }) => {
   const classes = useStyles();
 
   return (
-    <Card>
+    <Card className={classes.root}>
       <CardMedia image={media.source} alt={name} className={classes.media} />
       <CardContent className={classes.cardContent}>
         <Typography variant="h6" gutterBottom>
